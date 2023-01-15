@@ -1,5 +1,5 @@
 from django.contrib import admin
-from Users.models import Users
+from Users.models import Users, EmailOtp
 
 
 class UserAdmin(admin.ModelAdmin):
@@ -7,3 +7,4 @@ class UserAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Users, UserAdmin)
+admin.site.register(EmailOtp)

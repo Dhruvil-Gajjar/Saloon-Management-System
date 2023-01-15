@@ -35,9 +35,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Celery
+    'django_celery_results',
+
     # Apps
-    # 'Customers',
-    # 'Employee',
+    'Shop',
 ]
 
 MIDDLEWARE = [
@@ -112,3 +114,23 @@ USE_TZ = True
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SILENCED_SYSTEM_CHECKS = ['auth.E003', 'auth.W004']
+
+
+# Celery Settings
+CELERY_RESULT_BACKEND = "django-db"
+
+
+# Email Settings
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'dhruvilvi.dev@gmail.com' # os.getenv('dhruvilvi.dev@gmail.com') # 'EMAIL_HOST_USER',
+EMAIL_HOST_PASSWORD = 'btzbxgyljzxusywg' # os.getenv('btzbxgyljzxusywg') # 'EMAIL_HOST_PASSWORD',
+
+
+# Twillo Settings
+SMS_BACKEND = 'sms.backends.twilio.SmsBackend'
+TWILIO_ACCOUNT_SID = os.getenv('TWILIO_ACCOUNT_SID', 'AC7224dd55d848a17f8cfd7524f682dea0')
+TWILIO_AUTH_TOKEN = os.getenv('TWILIO_AUTH_TOKEN', '6a30f6929c14a621b2ff09dfc5d42b59')
+

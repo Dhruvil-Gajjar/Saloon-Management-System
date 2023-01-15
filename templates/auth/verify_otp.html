@@ -1,0 +1,152 @@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+
+<style>
+    body{
+          margin: 0;
+          padding: 0;
+          {#background: linear-gradient(120deg,#2980b9, #8e44ad);#}
+          background-image: url("../../static/images/login-background.jpg");
+          height: 100vh;
+          overflow: hidden;
+    }
+
+    .height-100 {
+        height: 100vh
+    }
+
+    .card {
+        width: 400px;
+        border: none;
+        height: 300px;
+        z-index: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: #3a3a3ae6;
+        border-radius: 10px;
+        box-shadow: 10px 10px 15px rgb(0 0 0 / 5%);
+    }
+
+    .card h6 {
+        color: antiquewhite;
+        font-size: 20px
+    }
+
+    .inputs input {
+        width: 40px;
+        height: 40px
+    }
+
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        appearance: none;
+        margin: 0
+    }
+
+    .card-2 {
+        background-color: #d9d9d9;
+        padding: 10px;
+        width: 350px;
+        height: 100px;
+        bottom: -50px;
+        left: 20px;
+        position: absolute;
+        border-radius: 5px
+    }
+
+    .card-2 .content {
+        margin-top: 50px
+    }
+
+    .card-2 .content a {
+        color: antiquewhite;
+    }
+
+    .form-control:focus {
+        box-shadow: none;
+        border: 2px solid antiquewhite;
+    }
+
+    .validate {
+        border-radius: 20px;
+        height: 40px;
+        background-color: #d9d9d9;
+        border: 1px solid antiquewhite;
+        width: 140px;
+        color: black;
+    }
+</style>
+
+<div class="container height-100 d-flex justify-content-center align-items-center">
+    <div class="position-relative">
+        <div class="card p-2 text-center">
+            <h6>Please enter the one time password <br> to verify your account</h6>
+            <div style="color: aliceblue;" > <span>A code has been sent to</span> <small>*******9897</small> </div>
+
+            <form method="post">
+                {% csrf_token %}
+                <div id="otp" class="inputs d-flex flex-row justify-content-center mt-2">
+                    <input class="m-2 text-center form-control rounded" type="number" id="first" maxlength="1" onkeyup="filled()" required />
+                    <input class="m-2 text-center form-control rounded" type="number" id="second" maxlength="1" onkeyup="filled()" required />
+                    <input class="m-2 text-center form-control rounded" type="number" id="third" maxlength="1" onkeyup="filled()" required />
+                    <input class="m-2 text-center form-control rounded" type="number" id="fourth" maxlength="1" onkeyup="filled()" required />
+                    <input class="m-2 text-center form-control rounded" type="number" id="fifth" maxlength="1" onkeyup="filled()" required />
+                    <input class="m-2 text-center form-control rounded" type="number" id="sixth" maxlength="1" onkeyup="filled()" required />
+                </div>
+
+                 <input type="hidden" id="otp_value" name="otp" >
+
+                <div class="mt-4">
+                    <button class="btn btn-danger px-4 validate" id="button" onclick="fillOtp()" disabled >Validate</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function(event) {
+        function OTPInput() {
+        const inputs = document.querySelectorAll('#otp > *[id]');
+        for (let i = 0; i < inputs.length; i++) { inputs[i].addEventListener('keydown', function(event) { if (event.key==="Backspace" ) { inputs[i].value='' ; if (i !==0) inputs[i - 1].focus(); } else { if (i===inputs.length - 1 && inputs[i].value !=='' ) { return true; } else if (event.keyCode> 47 && event.keyCode < 58) { inputs[i].value=event.key; if (i !==inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } else if (event.keyCode> 64 && event.keyCode < 91) { inputs[i].value=String.fromCharCode(event.keyCode); if (i !==inputs.length - 1) inputs[i + 1].focus(); event.preventDefault(); } } }); } } OTPInput();
+    });
+
+    function filled() {
+        if (document.getElementById("first").value === "" || document.getElementById("second").value === ""
+            || document.getElementById("third").value === "" || document.getElementById("fourth").value === ""
+            || document.getElementById("fifth").value === "" || document.getElementById("sixth").value === "") {
+            document.getElementById('button').disabled = true;
+        } else {
+            document.getElementById('button').disabled = false;
+        }
+    }
+
+    function fillOtp () {
+        if (document.getElementById("first").value !== "" && document.getElementById("second").value !== ""
+            && document.getElementById("third").value !== "" && document.getElementById("fourth").value !== ""
+            && document.getElementById("fifth").value !== "" && document.getElementById("sixth").value !== "")
+        {
+            var otp = ""
+            otp += document.getElementById('first').value
+            otp += document.getElementById('second').value
+            otp += document.getElementById('third').value
+            otp += document.getElementById('fourth').value
+            otp += document.getElementById('fifth').value
+            otp += document.getElementById('sixth').value
+
+            document.getElementById('otp_value').value = otp;
+        } else {
+            document.getElementById('button').disabled = false;
+        }
+
+    }
+</script>

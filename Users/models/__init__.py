@@ -1,2 +1,2 @@
 from .base import Base
-from .users import Users
+from .users import Users, EmailOtp

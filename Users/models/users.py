@@ -1,12 +1,28 @@
+import uuid
+
 from django.db import models
 from django.utils import timezone
 from django.dispatch import receiver
-from django.db.models.signals import pre_save
+from django.db.models.signals import pre_save, post_save
 from django.contrib.auth.models import AbstractUser, PermissionsMixin
 from django.core.validators import RegexValidator
 from django.core.exceptions import ValidationError
 from django.contrib.auth import password_validation
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
+
+
+class CustomerManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(type=Users.UserTypes.CUSTOMER)
+        return queryset
+
+
+class EmployeeManager(models.Manager):
+    def get_queryset(self, *args, **kwargs):
+        queryset = super().get_queryset(*args, **kwargs)
+        queryset = queryset.filter(type=Users.UserTypes.EMPLOYEE)
+        return queryset
 
 
 class UserAccountManager(BaseUserManager):
@@ -42,6 +58,8 @@ class Users(AbstractBaseUser, PermissionsMixin):
         USER = "USER", "USER"
         EMPLOYEE = "EMPLOYEE", "employee"
         CUSTOMER = "CUSTOMER", "customer"
+
+    id = models.CharField(primary_key=True, max_length=36, editable=False, default=uuid.uuid4)
 
     phone_regex = RegexValidator(
         regex=r'^[6-9]\d{9}$',
@@ -79,8 +97,11 @@ class Users(AbstractBaseUser, PermissionsMixin):
 
     # defining the manager for the UserAccount model
     objects = UserAccountManager()
+    customer_objects = CustomerManager()
+    employee_objects = EmployeeManager()
 
     class Meta:
+        unique_together = ['email', 'phone_number']
         verbose_name = 'User'
         verbose_name_plural = 'User(s)'
 
@@ -104,6 +125,9 @@ class Users(AbstractBaseUser, PermissionsMixin):
         if not self.type or self.type == None:
             self.type = Users.UserTypes.USER
 
+        if self.email and Users.objects.filter(email=self.email).exists():
+            raise ValidationError('User with this email is already registered!')
+
         if self.phone_number and Users.objects.filter(phone_number=self.phone_number).exists():
             raise ValidationError('User with this number is already registered!')
 
@@ -117,3 +141,16 @@ def set_username(sender, instance, **kwargs):
                 instance.username = BaseUserManager.normalize_email(instance.email)
             else:
                 instance.username = instance.phone_number
+
+
+class EmailOtp(models.Model):
+    id = models.CharField(primary_key=True, max_length=36, editable=False, default=uuid.uuid4)
+    email = models.EmailField(blank=True, null=True)
+    otp = models.CharField(max_length=10, blank=True, null=True)
+
+    class Meta:
+        verbose_name = 'Email Otp'
+        verbose_name_plural = 'Email Otp(s)'
+
+    def __str__(self):
+        return self.email
