@@ -125,11 +125,11 @@ class Users(AbstractBaseUser, PermissionsMixin):
         if not self.type or self.type == None:
             self.type = Users.UserTypes.USER
 
-        if self.email and Users.objects.filter(email=self.email).exists():
-            raise ValidationError('User with this email is already registered!')
+        # if self.email and Users.objects.filter(email=self.email).exists():
+        #     raise ValidationError('User with this email is already registered!')
 
-        if self.phone_number and Users.objects.filter(phone_number=self.phone_number).exists():
-            raise ValidationError('User with this number is already registered!')
+        # if self.phone_number and Users.objects.filter(phone_number=self.phone_number).exists():
+        #     raise ValidationError('User with this number is already registered!')
 
         return super().save(*args, **kwargs)
 

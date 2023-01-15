@@ -25,3 +25,9 @@ class RegisterNumberForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={'required': True}),
             'phone_number': forms.TextInput(attrs={'required': True})
         }
+
+    def clean(self):
+        phone_number = self.cleaned_data['phone_number']
+        if Users.objects.filter(phone_number=phone_number).exists():
+            raise forms.ValidationError("User with this phone number is already registered !!.")
+        return self.cleaned_data

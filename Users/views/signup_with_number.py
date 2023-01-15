@@ -1,5 +1,8 @@
 import pyotp
 import base64
+
+from django.db import transaction
+from django.contrib import messages
 from django.shortcuts import render, redirect
 
 from Users.models import Users
@@ -8,6 +11,7 @@ from Users.forms import RegisterNumberForm
 from Users.tasks import send_number_verification_otp
 
 
+@transaction.atomic
 def sign_up_with_number(request):
     if request.method == 'POST':
         form = RegisterNumberForm(request.POST)
@@ -30,6 +34,7 @@ def sign_up_with_number(request):
     return render(request, 'auth/sign_up_number.html', context={"form": form})
 
 
+@transaction.atomic
 def verify_number(request, phone_number):
     if request.method == "POST":
         keygen = generateKey()
@@ -44,6 +49,6 @@ def verify_number(request, phone_number):
 
             return render(request, 'index.html', context={})
         else:
-            pass  # return error
+            messages.error(request, 'Otp entered is not correct !!')
 
-    return render(request, 'auth/verify_otp.html', context={})
+    return render(request, 'auth/verify_otp.html', context={"username": phone_number[-4:]})

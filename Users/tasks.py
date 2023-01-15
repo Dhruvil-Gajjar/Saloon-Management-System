@@ -30,7 +30,7 @@ def send_email_verification_otp(mail_subject, message, to_email):
 @app.task()
 def send_number_verification_otp(to_number, otp):
     try:
-        client = Client(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN)
+        client = Client("AC7224dd55d848a17f8cfd7524f682dea0", "676baf36355a2cb721a21ed6cae3a3b2")
 
         message = client.messages.create(
             to=f"+91{to_number}",

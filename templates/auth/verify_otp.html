@@ -81,13 +81,17 @@
         width: 140px;
         color: black;
     }
+    .messages {
+        color: orangered;
+        margin-bottom: 15px;
+    }
 </style>
 
 <div class="container height-100 d-flex justify-content-center align-items-center">
     <div class="position-relative">
         <div class="card p-2 text-center">
             <h6>Please enter the one time password <br> to verify your account</h6>
-            <div style="color: aliceblue;" > <span>A code has been sent to</span> <small>*******9897</small> </div>
+            <div style="color: aliceblue;" > <span>A code has been sent to</span> <small>*******{{ username }} </small> </div>
 
             <form method="post">
                 {% csrf_token %}
@@ -99,6 +103,14 @@
                     <input class="m-2 text-center form-control rounded" type="number" id="fifth" maxlength="1" onkeyup="filled()" required />
                     <input class="m-2 text-center form-control rounded" type="number" id="sixth" maxlength="1" onkeyup="filled()" required />
                 </div>
+
+                {% if messages %}
+                    <ul class="messages" style="margin-bottom: 15px;">
+                        {% for message in messages %}
+                        <li class="text-danger">{{ message }}</li>
+                        {% endfor %}
+                    </ul>
+                {% endif %}
 
                  <input type="hidden" id="otp_value" name="otp" >
 

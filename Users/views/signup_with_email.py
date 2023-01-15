@@ -1,3 +1,5 @@
+from django.db import transaction
+from django.contrib import messages
 from django.shortcuts import render, redirect
 from django.template.loader import render_to_string
 
@@ -7,6 +9,7 @@ from Users.forms import RegisterEmailForm
 from Users.tasks import send_email_verification_otp
 
 
+@transaction.atomic
 def sign_up_with_email(request):
     if request.method == 'POST':
         form = RegisterEmailForm(request.POST)
@@ -35,6 +38,7 @@ def sign_up_with_email(request):
     return render(request, 'auth/sign_up_email.html', context={'form': form})
 
 
+@transaction.atomic
 def verify_email(request, e_mail):
     if request.method == "POST":
         otp = request.POST.get("otp", None)
@@ -48,5 +52,5 @@ def verify_email(request, e_mail):
             email_otp_obj.delete()
             return render(request, 'index.html', context={})
         else:
-            pass  # return error
-    return render(request, 'auth/verify_otp.html', context={})
+            messages.error(request, 'Otp entered is not correct !!')
+    return render(request, 'auth/verify_otp.html', context={"username": e_mail[-13:]})

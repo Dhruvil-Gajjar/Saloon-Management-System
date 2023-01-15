@@ -25,3 +25,9 @@ class RegisterEmailForm(UserCreationForm):
             'last_name': forms.TextInput(attrs={'required': True}),
             'email': forms.TextInput(attrs={'required': True})
         }
+
+    def clean(self):
+        email = self.cleaned_data['email']
+        if Users.objects.filter(email=email).exists():
+            raise forms.ValidationError("User with this email is already registered !!.")
+        return self.cleaned_data
