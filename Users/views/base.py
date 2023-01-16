@@ -5,12 +5,9 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.decorators import login_required
 
 from Users.models import Users
-
-
-def dashboard(request):
-    return render(request, 'core/dashboard.html', context={})
 
 
 def sign_in(request):
@@ -54,9 +51,13 @@ def sign_in(request):
     else:
         form = AuthenticationForm()
 
-    # return render(request, 'Auth/login-new.html', {'form': form})
     return render(request, 'auth/sign_in.html', context={'form': form})
 
 
 def sign_up(request):
     return render(request, 'auth/sign_up.html', context={})
+
+
+@login_required
+def dashboard(request):
+    return render(request, 'core/dashboard.html', context={})

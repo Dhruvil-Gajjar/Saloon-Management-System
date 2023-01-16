@@ -115,6 +115,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 SILENCED_SYSTEM_CHECKS = ['auth.E003', 'auth.W004']
 
+# User Redirect
+LOGIN_URL = "/"
+LOGIN_REDIRECT_URL = 'dashboard'
 
 # Celery Settings
 CELERY_RESULT_BACKEND = "django-db"

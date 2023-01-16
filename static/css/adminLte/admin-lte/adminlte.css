@@ -60,13 +60,13 @@ article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
 
 body {
   margin: 0;
-  font-family: "Source Sans Pro", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+  font-family: 'Roboto', 'Helvetica', 'Arial', sans-serif;
   font-size: 1rem;
   font-weight: 400;
   line-height: 1.5;
   color: #212529;
   text-align: left;
-  background-color: #fff;
+  background-color: #D4D5D5;
 }
 
 [tabindex="-1"]:focus:not(:focus-visible) {
@@ -10699,6 +10699,10 @@ body,
   overflow: hidden;
 }
 
+.main-sidebar {
+    background-color: #f1f3f5;
+}
+
 .layout-boxed .wrapper .main-sidebar {
   left: inherit;
 }
@@ -18036,8 +18040,8 @@ body.text-sm .control-sidebar {
 }
 
 .navbar-white {
-  background-color: #fff;
-  color: #1f2d3d;
+  background-color: #d4d5d5 !important;
+  color: #9C9C9C;
 }
 
 .navbar-white.navbar-light .form-control-navbar::-webkit-input-placeholder {
